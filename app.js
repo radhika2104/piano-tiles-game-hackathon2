@@ -8,10 +8,11 @@
 // screen-2: pop-out -game over screen with blackout in background with buttons - share ,restart, exit
 
 let playingArea = document.querySelector(".playing-area");
-let continueGame = true;
+let playing = true;
 let gameScore = 0;
 let highScore = 0;
 let board = []
+
 // moving rows up and out of board using transform tanslate!
 
 function BoardSetup(){
@@ -136,37 +137,58 @@ function insertNewRowInPlayingArea(newRow){
         //     // spans[i].style.backgroundColor = 'white';
         // }
     }
+
+    let rows = document.querySelectorAll(".rows")
+    //removing event from last row
+    let lastRow = rows[rows.length-1];
+    lastRow.removeEventListener('click', currentRowEventListen);
+    let secondLastRow = rows[rows.length-2]
+    secondLastRow.addEventListener('click', currentRowEventListen);
+
 }
 
+//listening to current row
+function currentRowEventListen(event){
+    // LOGIC left for any row!
+    let element = event.target;
+    if (element.style.backgroundColor == 'black'){
+        // board.push(); 
+        var newRow = generateRow()
+        console.log('added new row is:', newRow)
+        // adding new row
+        board.splice(0, 0, newRow)
+        // deleting new row
+        board.pop();
 
+        //playing area - 1. remove last row 
+        // 2. insert new Row
 
-function clickAndGenerateNewBoard(){
-        playingArea.addEventListener('click', function(event){
-        // LOGIC left for any row!
-        let element = event.target;
-        if (element.style.backgroundColor == 'black'){
-            // board.push(); 
-            var newRow = generateRow()
-            console.log('added new row is:', newRow)
-            // adding new row
-            board.splice(0, 0, newRow)
-            // deleting new row
-            board.pop();
+        removeLastRowFromPlayingArea();
+        console.log("should remove last row")
+        insertNewRowInPlayingArea(newRow);
 
-            //playing area - 1. remove last row 
-            // 2. insert new Row
+        console.log('board after black click:',board)
+    } else if (element.style.backgroundColor == 'white') {
+        continueGame = false;
+        console.log("game quit message inside generateNewBoard")
+    }
 
-            removeLastRowFromPlayingArea();
-            console.log("should remove last row")
-            insertNewRowInPlayingArea(newRow);
+}
 
-            console.log('board after black click:',board)
-        } else if (element.style.backgroundColor == 'white') {
-            continueGame = false;
-            console.log("game quit message inside generateNewBoard")
-        }
+function clickAndGenerateNewBoard(gameCounter){
+        let rows = document.querySelectorAll(".rows")
+        let secondLastRow = rows[rows.length-2]
+        // let lastRow = rows[rows.length-1]
+        // document.querySelector(".playing-area:lastchild")
 
-    })
+        console.log("secondlastrow::",secondLastRow);
+        // console.log("lastrow::",lastRow);
+        // if (gameCounter == 1) {
+        //     rowListener = secondLastRow;
+        // } else {
+        //     rowListener = lastRow;
+        // }
+        secondLastRow.addEventListener('click', currentRowEventListen );
 }
 
 // function changeBoardDisplay() {
@@ -203,7 +225,15 @@ function clickAndGenerateNewBoard(){
 // main function
 function playGame(){
     makeBoardDisplay()
-    clickAndGenerateNewBoard()
+    let gameCounter = 0;
+    while (true){
+        gameCounter++;
+        clickAndGenerateNewBoard(gameCounter);
+        if (gameCounter == 4) {
+            break;
+        }
+    }
+    
     // if (continueGame == false){
     //     console.log('quit game')
     // } else {
