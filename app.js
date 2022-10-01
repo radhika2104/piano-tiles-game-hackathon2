@@ -23,7 +23,7 @@ function BoardSetup(){
     let yellowRow = Array(4).fill('yellow');
     board.push(yellowRow);
     console.log('board:',board)
-    return board;
+    
 }
 
 
@@ -56,15 +56,16 @@ function BoardSetup(){
 
 function makeBoardDisplay() {
     BoardSetup();
-    let firstRow = document.querySelector(".first-row");
-    let secondRow = document.querySelector(".second-row");
-    let thirdRow = document.querySelector(".third-row");
-    let fourthRow = document.querySelector(".fourth-row");
-    let boardRows = [firstRow,secondRow,thirdRow,fourthRow]
+    // let firstRow = document.querySelector(".first-row");
+    // let secondRow = document.querySelector(".second-row");
+    // let thirdRow = document.querySelector(".third-row");
+    // let fourthRow = document.querySelector(".fourth-row");
+    let rows = document.querySelectorAll(".rows")
+    // let boardRows = [firstRow,secondRow,thirdRow,fourthRow]
     for (let i = 0; i < 4; i++){
         
-            console.log("should be html element: ",boardRows[i]);
-            let spans = boardRows[i].querySelectorAll('span');
+            console.log("should be html element: ",rows[i]);
+            let spans = rows[i].querySelectorAll('span');
             console.log("spans in a row: ",spans);
             for (let j = 0; j<4;  j++){
                 spans[j].style.backgroundColor = board[i][j]
@@ -82,10 +83,7 @@ function makeBoardDisplay() {
                 // console.log('board[i][j] value ',board[i][j])
             }
             // [span.A, span.S, span.D, span.F]
- 
     }
-    
-   
 }
 
 
@@ -106,30 +104,112 @@ function makeBoardDisplay() {
     // continuegame = false if white, mark it as red?;
     // else if clicked block is black, generate a new row and add new score
 
+function removeLastRowFromPlayingArea(){
 
-function generateNewBoard(){
-
+    let divs = playingArea.querySelectorAll('div');
+    divs[divs.length - 1].remove();
 }
 
-// main function
-function playGame(){
-    makeBoardDisplay()
-    generateNewBoard()
-    let playingArea = document.querySelector(".playing-area");
-    playingArea.addEventListener('click', function(event){
-        console.log('board before click black:',board)
+function insertNewRowInPlayingArea(newRow){
+    let newRowDiv = document.createElement('div');
+    newRowDiv.classList.add('rows');
+    newRowDiv.innerHTML = '<span class="A">A</span><span class="S">S</span><span class="D">D</span><span class="F">F</span>';
+    //appends element to the beginning of playingArea
+    playingArea.prepend(newRowDiv);   
+    let spans = newRowDiv.querySelectorAll('span');
+    console.log("span hahaha:",spans)
+    for(let i=0; i<4;i++){
+        spans[i].style.backgroundColor = newRow[i];
+        spans[i].style.color = 'white';
+        // if(newRow[i] == 'black'){
+        //     spans[i].style.color = 'white';
+        // }
+        // if(newRow[i] == 'white'){
+        //     spans[i].style.color = 'white';
+        // }
+        // console.log("span[i]:", spans[i])
+        // if(newRow[i] == 'black'){
+        //     console.log("spans[i].style object:",spans[i].style)
+            
+        //     spans[i].style.backgroundColor = 'black';
+        // } else {
+        //     // spans[i].style.backgroundColor = 'white';
+        // }
+    }
+}
+
+
+
+function clickAndGenerateNewBoard(){
+        playingArea.addEventListener('click', function(event){
+        // LOGIC left for any row!
         let element = event.target;
         if (element.style.backgroundColor == 'black'){
             // board.push(); 
             var newRow = generateRow()
-            console.log('added new row is:',)
-            board.splice(0, 0, ['g','g','g','g'])
+            console.log('added new row is:', newRow)
+            // adding new row
+            board.splice(0, 0, newRow)
+            // deleting new row
             board.pop();
+
+            //playing area - 1. remove last row 
+            // 2. insert new Row
+
+            removeLastRowFromPlayingArea();
+            console.log("should remove last row")
+            insertNewRowInPlayingArea(newRow);
+
             console.log('board after black click:',board)
-            
+        } else if (element.style.backgroundColor == 'white') {
+            continueGame = false;
+            console.log("game quit message inside generateNewBoard")
         }
-        
+
     })
+}
+
+// function changeBoardDisplay() {
+//     let firstRow = document.querySelector(".first-row");
+//     let secondRow = document.querySelector(".second-row");
+//     let thirdRow = document.querySelector(".third-row");
+//     let fourthRow = document.querySelector(".fourth-row");
+//     let boardRows = [firstRow,secondRow,thirdRow,fourthRow]
+//     for (let i = 0; i < 4; i++){
+        
+//             console.log("should be html element: ",boardRows[i]);
+//             let spans = boardRows[i].querySelectorAll('span');
+//             console.log("spans in a row: ",spans);
+//             for (let j = 0; j<4;  j++){
+//                 spans[j].style.backgroundColor = board[i][j]
+//                 if(board[i][j] == 'black'){
+//                     spans[j].style.color = 'white';
+//                 }
+//                 if(board[i][j] == 'white'){
+//                     spans[j].style.color = 'white';
+//                 }
+//                 if(board[i][j] == 'yellow'){
+//                     spans[j].style.color = 'yellow';
+//                 }
+//                 // console.log('current row and current span: ',boardRows[i],spans[j])
+//                 // console.log('current span bg color: ',spans[j].style.backgroundColor)
+//                 console.log('board[i][j] value ',board[i][j])
+//             }
+//             // [span.A, span.S, span.D, span.F]
+//     }
+
+// }
+
+// main function
+function playGame(){
+    makeBoardDisplay()
+    clickAndGenerateNewBoard()
+    // if (continueGame == false){
+    //     console.log('quit game')
+    // } else {
+    //     changeBoardDisplay()
+    // }
+    
     // document.addEventListener('keypress', function(){
         
     // })
