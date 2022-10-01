@@ -13,7 +13,7 @@ let gamePlaying = true;
 let gameScore = 0;
 let highScore = 0;
 let board = [];
-
+let myInterval = null;
 let gameRows = [];
 let indexOfRow = 1;
 
@@ -177,59 +177,37 @@ function currentRowEventListen(event){
     }}
 }
 
-function clickAndGenerateNewBoard(){
-        let rows = document.querySelectorAll(".rows")
-        let secondLastRow = rows[rows.length-2]
 
-        console.log("secondlastrow::",secondLastRow);
 
-        secondLastRow.addEventListener('click', currentRowEventListen );
+
+function selectAndListenCurrentRow() {
+    let currentBoard = document.querySelectorAll(".rows")
+    let currentRowOnCurrentBoard = currentBoard[currentBoard.length-2]
+    console.log("secondlastrow::",currentRowOnCurrentBoard);
+    let flag = false;
+    currentRowOnCurrentBoard.addEventListener('click', function(event){
+        // quit game on no event and wrong event(white) on current row
+        // flag = true;
+        let element = event.target;
+        if (element.style.backgroundColor == 'black'){
+            element.style.backgroundColor = 'grey';
+            // return gamePlaying;
+        } else if (element.style.backgroundColor == 'white') {
+            element.style.backgroundColor = 'red';
+            // gamePlaying = false;
+            console.log("gameplaying white click inside selectAndListenCurrentRow()",gamePlaying)
+            // return gamePlaying;
+        }
+    });
+    // if (flag == false){
+    //     gamePlaying = false;
+    // }
+    return gamePlaying;
 }
 
-// function changeBoardDisplay() {
-//     let firstRow = document.querySelector(".first-row");
-//     let secondRow = document.querySelector(".second-row");
-//     let thirdRow = document.querySelector(".third-row");
-//     let fourthRow = document.querySelector(".fourth-row");
-//     let boardRows = [firstRow,secondRow,thirdRow,fourthRow]
-//     for (let i = 0; i < 4; i++){
-        
-//             console.log("should be html element: ",boardRows[i]);
-//             let spans = boardRows[i].querySelectorAll('span');
-//             console.log("spans in a row: ",spans);
-//             for (let j = 0; j<4;  j++){
-//                 spans[j].style.backgroundColor = board[i][j]
-//                 if(board[i][j] == 'black'){
-//                     spans[j].style.color = 'white';
-//                 }
-//                 if(board[i][j] == 'white'){
-//                     spans[j].style.color = 'white';
-//                 }
-//                 if(board[i][j] == 'yellow'){
-//                     spans[j].style.color = 'yellow';
-//                 }
-//                 // console.log('current row and current span: ',boardRows[i],spans[j])
-//                 // console.log('current span bg color: ',spans[j].style.backgroundColor)
-//                 console.log('board[i][j] value ',board[i][j])
-//             }
-//             // [span.A, span.S, span.D, span.F]
-//     }
 
-// }
 
-function listenEventOnSecondLastRow(){
-    gamePlaying = false;
-    console.log("gamePlaying inside listenEventOnSecondLastRow():",gamePlaying)
-    // let rows = document.querySelectorAll(".rows")
-    // let secondLastRow = rows[rows.length-2]
-    // console.log("secondlastrow::",secondLastRow);
-    // // currentRowEventListen
-    // secondLastRow.addEventListener('click',  function(){
-    //     console.log("selected second last row")
-    // });
-}
-
-function appendAndDeleteRow() {
+function appendAndDeleteRow(gamePlaying) {
     var newRow = generateRow()
     console.log('added new row is:', newRow)
     // adding new row
@@ -241,35 +219,33 @@ function appendAndDeleteRow() {
     removeLastRowFromPlayingArea();
     console.log("should remove last row")
     insertNewRowInPlayingArea(newRow);
-    listenEventOnSecondLastRow()
+    // check wrong event (white click) and check no event (no click)
+    gamePlaying = selectAndListenCurrentRow()
+    console.log("gamePlaying inside listenEventOnSecondLastRow():",gamePlaying)
+    // console.log("forcestop in appendAndDeleteRow... by making gamePlaying false")
+    // gamePlaying = false;
+    if (gamePlaying == false){
+        console.log("radhika test: are we inside gamePlaying")
+        clearInterval(myInterval);
+    }
+    // listenEventOnSecondLastRow(gamePlaying,myInterval)
 }
 
-// let timer = 0;
-
-// function increment(){
-//     timer++;
-//     console.log(timer);
-// }
 
 function clickonStart(){
-    // timer start
+   
     let rows = document.querySelectorAll(".rows")
     let secondLastRow = rows[rows.length-2]
     console.log("secondlastrow::",secondLastRow);
     secondLastRow.addEventListener('click', function(event){
         let cell = event.target;
-        if (cell.style.backgroundColor == 'black'){
-            const myInterval = setInterval(appendAndDeleteRow, 1000);
+        if (cell.style.backgroundColor == 'black'){  
+            cell.style.backgroundColor = 'grey';
+            myInterval = setInterval(appendAndDeleteRow, 1000,gamePlaying);
             console.log("gamePlaying outside listenEventOnSecondLastRow():",gamePlaying)
-            if (gamePlaying == false){
-                console.log("radhika test: are we inside gamePlaying")
-                clearInterval(myInterval);
-            }
-            // setInterval(increment, 1);
-            // if (increment >= 2000) {
-                
-            // }
+          
         }else {
+            cell.style.backgroundColor = 'red';
             console.log("quit game inside clickonStart() ")
         } 
     });
