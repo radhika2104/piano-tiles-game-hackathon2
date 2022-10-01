@@ -23,34 +23,35 @@ function BoardSetup(){
     let yellowRow = Array(4).fill('yellow');
     board.push(yellowRow);
     console.log('board:',board)
+    return board;
 }
 
 
-function fillBoard(){
-    for (let outerIndex = 0; outerIndex < 4; outerIndex++){
-        let currentRow = document.createElement('div');
-        for (let innerIndex = 0; innerIndex < 4; innerIndex++){
-            let currentCell = document.createElement('span');
-            currentCell.style.height = '20px';
-            currentCell.style.width = '20px';
-            if (board[outerIndex][innerIndex] == 'white'){
-                currentCell.style.backgroundColor = "white"
-            } else if (board[outerIndex][innerIndex] == 'black'){
-                currentCell.style.backgroundColor = "black"
-            } else {
-                currentCell.style.backgroundColor = "yellow"
-            }
-            currentRow.appendChild(currentCell);
-        }
-        playingArea.appendChild(currentRow);
-    }
-}
+// function fillBoard(){
+//     for (let outerIndex = 0; outerIndex < 4; outerIndex++){
+//         let currentRow = document.createElement('div');
+//         for (let innerIndex = 0; innerIndex < 4; innerIndex++){
+//             let currentCell = document.createElement('span');
+//             currentCell.style.height = '20px';
+//             currentCell.style.width = '20px';
+//             if (board[outerIndex][innerIndex] == 'white'){
+//                 currentCell.style.backgroundColor = "white"
+//             } else if (board[outerIndex][innerIndex] == 'black'){
+//                 currentCell.style.backgroundColor = "black"
+//             } else {
+//                 currentCell.style.backgroundColor = "yellow"
+//             }
+//             currentRow.appendChild(currentCell);
+//         }
+//         playingArea.appendChild(currentRow);
+//     }
+// }
 
 
                         //testing purpose only. do not try this at home
 
 // fillBoard();
-makeBoardDisplay();
+// makeBoardDisplay();
 
 
 function makeBoardDisplay() {
@@ -84,17 +85,7 @@ function makeBoardDisplay() {
  
     }
     
-    // for (let i = 0; i < 4; outerIndex++){
-    //     // rows[i].addEventListener("keydown",function(event){
-            
-            
-    //     // })
-    // }
-    // for (let i = 0; i < 4; outerIndex++){
-    //     // rows[i].addEventListener("click",function(){
-            
-    //     // })
-    // }
+   
 }
 
 
@@ -110,14 +101,45 @@ function makeBoardDisplay() {
     
 // }
 
+
+    // check if clicked block is white/black, 
+    // continuegame = false if white, mark it as red?;
+    // else if clicked block is black, generate a new row and add new score
+
+
+function generateNewBoard(){
+
+}
+
 // main function
 function playGame(){
-    // BoardSetup()
+    makeBoardDisplay()
+    generateNewBoard()
+    let playingArea = document.querySelector(".playing-area");
+    playingArea.addEventListener('click', function(event){
+        console.log('board before click black:',board)
+        let element = event.target;
+        if (element.style.backgroundColor == 'black'){
+            // board.push(); 
+            var newRow = generateRow()
+            console.log('added new row is:',)
+            board.splice(0, 0, ['g','g','g','g'])
+            board.pop();
+            console.log('board after black click:',board)
+            
+        }
+        
+    })
+    // document.addEventListener('keypress', function(){
+        
+    // })
 
     // check if clicked block is white/black, 
     // continuegame = false if white, mark it as red?;
     // else if clicked block is black, generate a new row and add new score
 } 
+
+playGame()
 
 
 function generateRow() {
@@ -130,12 +152,12 @@ function generateRow() {
     return row;
 }
 
-function fillBoard() {
-    //to fill board
-    for (let i=0; i<4;i++){
-        board.push(generateRow())
-    }
-}
+// function fillBoard() {
+//     //to fill board
+//     for (let i=0; i<4;i++){
+//         board.push(generateRow())
+//     }
+// }
 
 
 
