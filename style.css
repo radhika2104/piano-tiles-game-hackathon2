@@ -1,0 +1,26 @@
+:root{
+    --primary-color: rgb(37, 27, 55);
+    --secondary-color: rgb(55, 41, 72);
+    --third-color: rgb(255, 202, 202);
+    --fourth-color: rgb(255, 236, 239);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    background-color: var(--secondary-color);
+}
+
+.main-content{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.playing-area{
+    width: 30vw;
+    height: 60vh;
+    background-color: var(--third-color);
+}
