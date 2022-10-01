@@ -9,10 +9,20 @@
 
 let playingArea = document.querySelector(".playing-area");
 let playing = true;
+let gamePlaying = true;
 let gameScore = 0;
 let highScore = 0;
-let board = []
+let board = [];
 
+let gameRows = [];
+let indexOfRow = 1;
+
+let initialRows = playingArea.querySelectorAll('div');
+for(let a = 3; a >= 0; a--){
+    gameRows.push(initialRows[a]);
+}
+
+console.log("initialRows bolte: ", initialRows);
 // moving rows up and out of board using transform tanslate!
 
 function BoardSetup(){
@@ -24,7 +34,6 @@ function BoardSetup(){
     let yellowRow = Array(4).fill('yellow');
     board.push(yellowRow);
     console.log('board:',board)
-    
 }
 
 
@@ -47,8 +56,6 @@ function BoardSetup(){
 //         playingArea.appendChild(currentRow);
 //     }
 // }
-
-
                         //testing purpose only. do not try this at home
 
 // fillBoard();
@@ -88,9 +95,6 @@ function makeBoardDisplay() {
 }
 
 
-
-
-
 // let thirdRow = document.querySelector(".third-row");
 // thirdRow.addEventListener("keypress"), function(){
 
@@ -99,7 +103,6 @@ function makeBoardDisplay() {
 // thirdRow.addEventListener("click"), function(){
     
 // }
-
 
     // check if clicked block is white/black, 
     // continuegame = false if white, mark it as red?;
@@ -117,6 +120,9 @@ function insertNewRowInPlayingArea(newRow){
     newRowDiv.innerHTML = '<span class="A">A</span><span class="S">S</span><span class="D">D</span><span class="F">F</span>';
     //appends element to the beginning of playingArea
     playingArea.prepend(newRowDiv);   
+
+    gameRows.push(newRowDiv);
+
     let spans = newRowDiv.querySelectorAll('span');
     console.log("span hahaha:",spans)
     for(let i=0; i<4;i++){
@@ -137,13 +143,7 @@ function insertNewRowInPlayingArea(newRow){
         //     // spans[i].style.backgroundColor = 'white';
         // }
     }
-
-    let rows = document.querySelectorAll(".rows")
-    //removing event from last row
-    let lastRow = rows[rows.length-1];
-    lastRow.removeEventListener('click', currentRowEventListen);
-    let secondLastRow = rows[rows.length-2]
-    secondLastRow.addEventListener('click', currentRowEventListen);
+     
 
 }
 
@@ -151,43 +151,38 @@ function insertNewRowInPlayingArea(newRow){
 function currentRowEventListen(event){
     // LOGIC left for any row!
     let element = event.target;
-    if (element.style.backgroundColor == 'black'){
+    let rowIteration = 0;
+    while (playing) {
+    if (element.style.backgroundColor == 'black' && (rowIteration ==2)){
+        element.style.backgroundColor = 'grey';
         // board.push(); 
         var newRow = generateRow()
         console.log('added new row is:', newRow)
         // adding new row
         board.splice(0, 0, newRow)
-        // deleting new row
+        // deleting old row
         board.pop();
-
         //playing area - 1. remove last row 
         // 2. insert new Row
-
         removeLastRowFromPlayingArea();
         console.log("should remove last row")
         insertNewRowInPlayingArea(newRow);
 
         console.log('board after black click:',board)
+        rowIteration++;
+        
     } else if (element.style.backgroundColor == 'white') {
-        continueGame = false;
+        playing = false;
         console.log("game quit message inside generateNewBoard")
-    }
-
+    }}
 }
 
-function clickAndGenerateNewBoard(gameCounter){
+function clickAndGenerateNewBoard(){
         let rows = document.querySelectorAll(".rows")
         let secondLastRow = rows[rows.length-2]
-        // let lastRow = rows[rows.length-1]
-        // document.querySelector(".playing-area:lastchild")
 
         console.log("secondlastrow::",secondLastRow);
-        // console.log("lastrow::",lastRow);
-        // if (gameCounter == 1) {
-        //     rowListener = secondLastRow;
-        // } else {
-        //     rowListener = lastRow;
-        // }
+
         secondLastRow.addEventListener('click', currentRowEventListen );
 }
 
@@ -222,17 +217,94 @@ function clickAndGenerateNewBoard(gameCounter){
 
 // }
 
+function listenEventOnSecondLastRow(){
+    gamePlaying = false;
+    console.log("gamePlaying inside listenEventOnSecondLastRow():",gamePlaying)
+    // let rows = document.querySelectorAll(".rows")
+    // let secondLastRow = rows[rows.length-2]
+    // console.log("secondlastrow::",secondLastRow);
+    // // currentRowEventListen
+    // secondLastRow.addEventListener('click',  function(){
+    //     console.log("selected second last row")
+    // });
+}
+
+function appendAndDeleteRow() {
+    var newRow = generateRow()
+    console.log('added new row is:', newRow)
+    // adding new row
+    board.splice(0, 0, newRow)
+    // deleting new row
+    board.pop();
+    //playing area - 1. remove last row 
+    // 2. insert new Row
+    removeLastRowFromPlayingArea();
+    console.log("should remove last row")
+    insertNewRowInPlayingArea(newRow);
+    listenEventOnSecondLastRow()
+}
+
+// let timer = 0;
+
+// function increment(){
+//     timer++;
+//     console.log(timer);
+// }
+
+function clickonStart(){
+    // timer start
+    let rows = document.querySelectorAll(".rows")
+    let secondLastRow = rows[rows.length-2]
+    console.log("secondlastrow::",secondLastRow);
+    secondLastRow.addEventListener('click', function(event){
+        let cell = event.target;
+        if (cell.style.backgroundColor == 'black'){
+            const myInterval = setInterval(appendAndDeleteRow, 1000);
+            console.log("gamePlaying outside listenEventOnSecondLastRow():",gamePlaying)
+            if (gamePlaying == false){
+                console.log("radhika test: are we inside gamePlaying")
+                clearInterval(myInterval);
+            }
+            // setInterval(increment, 1);
+            // if (increment >= 2000) {
+                
+            // }
+        }else {
+            console.log("quit game inside clickonStart() ")
+        } 
+    });
+    
+    // secondLastRow.addEventListener('click', currentRowEventListen);
+}
+
 // main function
 function playGame(){
     makeBoardDisplay()
-    let gameCounter = 0;
-    while (true){
-        gameCounter++;
-        clickAndGenerateNewBoard(gameCounter);
-        if (gameCounter == 4) {
-            break;
-        }
-    }
+    clickonStart()
+
+
+    // let rows = document.querySelectorAll(".rows")
+    // //removing event from last row
+    // let lastRow = rows[rows.length-1];
+    // lastRow.removeEventListener('click', currentRowEventListen);
+    // let secondLastRow = rows[rows.length-2]
+    // secondLastRow.addEventListener('click', currentRowEventListen);
+
+    // click on start and generate rows with settimeout
+
+    // console.log('playing game without game counter:')
+    // clickAndGenerateNewBoard();
+
+    // console.log('playing game below this line is game counter:')
+    // let gameCounter = 0;
+    // while (true){
+    //     gameCounter++;
+    //     console.log('game counter: ',gameCounter)
+    //     clickAndGenerateNewBoard(gameCounter);
+    //     if (gameCounter == 4) {
+    //         break;
+    //     }
+    // }
     
     // if (continueGame == false){
     //     console.log('quit game')
@@ -261,7 +333,6 @@ function generateRow() {
     // console.log("row with a random black: ",row);    
     return row;
 }
-
 // function fillBoard() {
 //     //to fill board
 //     for (let i=0; i<4;i++){
