@@ -11,6 +11,7 @@
 }
 
 body{
+    color: var(--third-color);
     background-color: var(--secondary-color);
 }
 

@@ -15,12 +15,15 @@ let highScore = 0;
 let board = [];
 let myInterval = null;
 let gameRows = [];
-let indexOfRow = 1;
 let timeElapsed = 0;
+let gameRowWasEmpty = false;
+let gameScoreContainer = document.querySelector("#gameScore");
+
 
 let initialRows = playingArea.querySelectorAll('div');
 for (let a = 2; a >= 0; a--) {
   gameRows.push(initialRows[a]);
+  console.log("gamerows:",gameRows)
 }
 
 console.log('initialRows bolte: ', initialRows);
@@ -178,6 +181,8 @@ function currentRowEventListen(event) {
 
 function selectAndListenCurrentRow() {
   if(gameRows.length === 0){
+    gameRowWasEmpty = true;
+    console.log("are we here????")
     return;
   }
   let currentRowOnCurrentBoard = gameRows[0];
@@ -185,6 +190,7 @@ function selectAndListenCurrentRow() {
   let flag = false;
 
     currentRowOnCurrentBoard.addEventListener('click', function (event) {
+      console.log("hum yaha nahi aye!!")
     // quit game on no event and wrong event(white) on current row
     flag = true;
     let element = event.target;
@@ -192,19 +198,33 @@ function selectAndListenCurrentRow() {
       element.style.backgroundColor = 'grey';
       gameRows.shift();
       gameScore++;
+      gameScoreContainer.textContent = gameScore;
+
       selectAndListenCurrentRow();
       // gamePlaying = true;
       // return gamePlaying;
     } else if (element.style.backgroundColor == 'white') {
       element.style.backgroundColor = 'red';
-      gamePlaying = false;
+      gamePlaying = false;                                                                                                                                                                                                                             
       console.log(
         'gameplaying white click inside selectAndListenCurrentRow()',
         gamePlaying
       );
+      if (gamePlaying == false) {
+        console.log('radhika test: are we inside gamePlaying');
+        clearInterval(myInterval);
+      }
       // return gamePlaying;
     }
   });
+  // if (flag == false) {
+  //       gamePlaying = false;
+  //       console.log("game to stop click!!")
+  //     }
+  // if (gamePlaying == false) {
+  //   console.log('radhika test: are we inside gamePlaying');
+  //   clearInterval(myInterval);
+  // }
 
   // setTimeout(() => {
   //   if (flag == false) {
@@ -213,7 +233,7 @@ function selectAndListenCurrentRow() {
   //   }
   // }, 1000);
 
-  return gamePlaying;
+  // return gamePlaying;
 }
 
 //counter for score of the person 
@@ -236,16 +256,25 @@ function appendAndDeleteRow(gamePlaying) {
   console.log('added new row is:', newRow);
   // adding new row
   board.splice(0, 0, newRow);
+  
   // deleting new row
   board.pop();
   //playing area - 1. remove last row
   // 2. insert new Row
   removeLastRowFromPlayingArea();
-  gameRows.shift();
   console.log('should remove last row');
   insertNewRowInPlayingArea(newRow);
+ 
   // check wrong event (white click) and check no event (no click)
-  gamePlaying = selectAndListenCurrentRow();
+  // || gameRowWasEmpty
+  if(timeElapsed === 1 || gameRowWasEmpty){
+    gameRowWasEmpty = false;
+    gameRows.shift();
+    gamePlaying = selectAndListenCurrentRow();
+  }
+  
+  
+  
   console.log('gamePlaying inside listenEventOnSecondLastRow():', gamePlaying);
   // console.log("forcestop in appendAndDeleteRow... by making gamePlaying false")
   // gamePlaying = false;
@@ -263,12 +292,15 @@ function appendAndDeleteRow(gamePlaying) {
 // }
 
 function clickonStart() {
+  
   let secondLastRow = gameRows[0];
   console.log('secondlastrow::', secondLastRow);
   secondLastRow.addEventListener('click', function (event) {
     let cell = event.target;
     if (cell.style.backgroundColor == 'black') {
       cell.style.backgroundColor = 'grey';
+      gameScore = 1;
+      gameScoreContainer.textContent = gameScore;
       
       //translating the playing area in Y direction
       // setInterval(transformPlayingArea, 1000);
@@ -286,13 +318,6 @@ function clickonStart() {
 
   // secondLastRow.addEventListener('click', currentRowEventListen);
 }
-
-
-
-
-
-
-
 
 // main function
 function playGame() {
