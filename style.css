@@ -11,6 +11,7 @@
 }
 
 body{
+    color: var(--third-color);
     background-color: var(--secondary-color);
 }
 
@@ -26,7 +27,9 @@ body{
 .playing-area{
     width: 30vw;
     height: 60vh;
+    overflow: hidden;
     background-color: var(--third-color);
+    /* transition: all 3s ease-in; */
 }
 
 .playing-area div{
@@ -42,3 +45,5 @@ body{
     text-align: center;
     border: 1px solid var(--secondary-color);
 }
+/* https://tenor.com/view/coin-op-coin-op-game-over-game-gif-25038182 */
+/* <div style="width:480px"><iframe allow="fullscreen" frameBorder="0" height="600" src="https://giphy.com/embed/G7cIi98l3vhiyQmXzo/video" width="480"></iframe></div> */
