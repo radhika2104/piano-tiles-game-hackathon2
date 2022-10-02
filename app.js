@@ -338,6 +338,8 @@ window.addEventListener("keypress",function(event){
 
         console.log("i am gameRows array: ", gameRows);
         currentRow = gameRows[0];
+        selectAndListenCurrentRow();
+        
         console.log("I am current row : ", currentRow);
         gameScoreContainer.textContent = gameScore;
 
