@@ -207,7 +207,14 @@ function selectAndListenCurrentRow() {
     // quit game on no event and wrong event(white) on current row
     flag = true;
     let element = event.target;
+    
     if (element.style.backgroundColor == 'black') {
+      const audio = document.querySelector(`audio[data-key="${element.textContent}"]`);
+
+      if(audio){
+        audio.currentTime = 0;
+        audio.play()
+      ;}
       element.style.backgroundColor = 'grey';
       gameScore++;
       gameScoreContainer.textContent = gameScore;
@@ -336,29 +343,6 @@ window.addEventListener("keypress", function (event) {
   if (!controls.has(event.key.toUpperCase())) return;
   const keyPressed = event.key.toUpperCase();
 
-
-  // const audio = document.querySelector(`audio[data-key= "${keyPressed}"]`);
-
-  // for(let note of audios){
-  //   if(note.classList.contains(keyPressed)){
-  //     theNote = note;
-  //   }
-  // }
-
-  // const audio = new Audio('https://soundcloud.com/aakash-jangra-45728440/a0?in=aakash-jangra-45728440/sets/piano-notes&si=c0d7a05aeca84c199347de0ebb47cb2e&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing');
-
-  // if(!audio) return;
-  // console.log(audio);
-  // audio.currentTime = 0;
-  // audio.play();
-  // let audio = new Audio(a_note);
-  // console.log("The audio is: ", audio);
-  // audio.play();
-  //playing respective sounds 
-  // if(keyPressed === 'A'){
-
-  // }
-
   console.log("hi i am current row:", currentRow)
   console.log("eventkey", keyPressed);
 
@@ -377,6 +361,13 @@ window.addEventListener("keypress", function (event) {
           currentRow = null;
           return;
         }
+
+        const audio = document.querySelector(`audio[data-key="${keyPressed}"]`);
+
+        if(audio){
+          audio.currentTime = 0;
+          audio.play();
+        } 
 
         console.log("i am gameRows array: ", gameRows);
         currentRow = gameRows[0];
@@ -422,6 +413,15 @@ function clickonStart() {
 
   currentRow.addEventListener('click', function (event) {
     let cell = event.target;
+
+    console.log("cell.textContent == ", cell.textContent);
+    const audio = document.querySelector(`audio[data-key="${cell.textContent}"]`);
+
+    if(audio){
+      audio.currentTime = 0;
+      audio.play()
+    ;}
+
     if (cell.style.backgroundColor == 'black') {
       cell.style.backgroundColor = 'grey';
       gameScore = 1;
@@ -512,6 +512,14 @@ function generateRow() {
 // }
 
 function endGamePopMessage() {
+
+  const gameOverSound = new Audio('sounds/game-over.wav');
+
+  if(gameOverSound){
+      gameOverSound.currentTime = 0;
+      gameOverSound.play();
+  }
+
   playingArea.innerHTML += '<div class="end-game-pop"></div>';
   let endGamePop = document.querySelector(".end-game-pop");
   endGamePop.style.position = 'absolute';
