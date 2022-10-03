@@ -13,16 +13,27 @@
     <main class="main-content">
         <header class="header">
             <h1>Piano Tiles</h1>
-            <span>Score:<span id="gameScore">0</span><span>
         </header>
             <section class="playing-area">
+                <span id="gameScore">0</span>
                 <div class="rows"><span class="A">A</span><span class="S">S</span><span class="D">D</span><span class="F">F</span></div>
                 <div class="rows"><span class="A">A</span><span class="S">S</span><span class="D">D</span><span class="F">F</span></div>
                 <div class="rows"><span class="A">A</span><span class="S">S</span><span class="D">D</span><span class="F">F</span></div>
                 <div class="rows"><span class="A">A</span><span class="S">S</span><span class="D">D</span><span class="F">F</span></div>
             </section>
     </main>
-
+    <audio data-key="A" src="sounds/a-note.mp3">
+    </audio>
+    <audio data-key="S" src="sounds/s-note.mp3">
+    </audio>
+    <audio data-key="D" src="sounds/d-note.mp3">
+    </audio>
+    <audio data-key="F" src="sounds/f-note.mp3">
+    </audio>
+    <audio autoplay="autoplay">
+        <source src="sounds/music.mp3">     
+    </audio>
     <script src="app.js"></script>
 </body>
 </html>
+

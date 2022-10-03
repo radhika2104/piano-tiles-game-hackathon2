@@ -7,6 +7,8 @@
 // screen-1: title piano tiles and score on left with main game boxes neeche
 // screen-2: pop-out -game over screen with blackout in background with buttons - share ,restart, exit
 
+const audios = document.querySelectorAll('audio');
+
 let playingArea = document.querySelector('.playing-area');
 let playing = true;
 let gamePlaying = true;
@@ -21,13 +23,15 @@ let gameScoreContainer = document.querySelector("#gameScore");
 let currentRow = null;
 let startOnce = true;
 let speed = 900;
+let root = document.querySelector(':root');
+let style = getComputedStyle(document.body);
 
 const controls = new Set(['A', 'S', 'D', 'F']);
 
 let initialRows = playingArea.querySelectorAll('div');
 for (let a = 2; a >= 0; a--) {
   gameRows.push(initialRows[a]);
-  console.log("gamerows:",gameRows)
+  console.log("gamerows:", gameRows)
 }
 
 console.log('initialRows bolte: ', initialRows);
@@ -186,7 +190,7 @@ function insertNewRowInPlayingArea(newRow) {
 function selectAndListenCurrentRow() {
 
 
-  if(gameRows.length === 0){
+  if (gameRows.length === 0) {
     gameRowWasEmpty = true;
     console.log("gameRows.length became 0 ")
     currentRow = null;
@@ -198,8 +202,8 @@ function selectAndListenCurrentRow() {
   console.log('currentRowOnCurrentBoard::', currentRowOnCurrentBoard);
   let flag = false;
 
-    currentRowOnCurrentBoard.addEventListener('click', function (event) {
-      // console.log("hum yaha nahi aye!!")
+  currentRowOnCurrentBoard.addEventListener('click', function (event) {
+    // console.log("hum yaha nahi aye!!")
     // quit game on no event and wrong event(white) on current row
     flag = true;
     let element = event.target;
@@ -208,58 +212,60 @@ function selectAndListenCurrentRow() {
       gameScore++;
       gameScoreContainer.textContent = gameScore;
       gameRows.shift();
-      
+
       selectAndListenCurrentRow();
       // gamePlaying = true;
       // return gamePlaying;
     } else if (element.style.backgroundColor == 'white') {
       element.style.backgroundColor = 'red';
-      gamePlaying = false;                                                                                                                                                                                                                             
+      endGamePopMessage();
+      gamePlaying = false;
       // console.log(
       //   'gameplaying white click inside selectAndListenCurrentRow()',
       //   gamePlaying
       // );
-      
-     
+
+
     }
 
     if (gamePlaying == false) {
       // console.log('radhika test: are we inside gamePlaying');
       clearInterval(myInterval);
+      endGamePopMessage();
     }
   });
 
-//    window.addEventListener("keypress",function(event){
-//       if(timeElapsed == 1)    return;
-      
-//       if(currentRowOnCurrentBoard == null)    return;
-//       console.log("currentRowOnCurrentBoard in keypress inside selectAndListenCurrentRow :",currentRowOnCurrentBoard)
-//       if(!controls.has(event.key.toUpperCase())) return ;
-//       const keyPressed = event.key.toUpperCase();
-//       console.log("eventkey inside selectAndListenCurrentRow", keyPressed);
-//       let spans = currentRowOnCurrentBoard.querySelectorAll('span');
-//       for(let span of spans){
-//         if(span.textContent == keyPressed ){
-//           if(span.style.backgroundColor == 'black'){
-//             span.style.backgroundColor = 'grey';
-//             gameRows.shift();
-//             gameScore++;
-//             gameScoreContainer.textContent = gameScore;      
-//             selectAndListenCurrentRow();
+  //    window.addEventListener("keypress",function(event){
+  //       if(timeElapsed == 1)    return;
 
-//           } else if (span.style.backgroundColor == 'white') {
-//             span.style.backgroundColor = 'red';
-//             gamePlaying = false;                                                                                                                                                                                                                             
-//       // console.log(
-//       //   'gameplaying white click inside selectAndListenCurrentRow()',
-//       //   gamePlaying
-//       // );
-//       if (gamePlaying == false) {
-//         console.log('radhika test: currentRowOnCurrentBoard in keypress inside selectAndListenCurrentRow gamePlaying became false, end interval');
-//         // clearInterval(myInterval);
-//       } 
-//     };  
-// }}});
+  //       if(currentRowOnCurrentBoard == null)    return;
+  //       console.log("currentRowOnCurrentBoard in keypress inside selectAndListenCurrentRow :",currentRowOnCurrentBoard)
+  //       if(!controls.has(event.key.toUpperCase())) return ;
+  //       const keyPressed = event.key.toUpperCase();
+  //       console.log("eventkey inside selectAndListenCurrentRow", keyPressed);
+  //       let spans = currentRowOnCurrentBoard.querySelectorAll('span');
+  //       for(let span of spans){
+  //         if(span.textContent == keyPressed ){
+  //           if(span.style.backgroundColor == 'black'){
+  //             span.style.backgroundColor = 'grey';
+  //             gameRows.shift();
+  //             gameScore++;
+  //             gameScoreContainer.textContent = gameScore;      
+  //             selectAndListenCurrentRow();
+
+  //           } else if (span.style.backgroundColor == 'white') {
+  //             span.style.backgroundColor = 'red';
+  //             gamePlaying = false;                                                                                                                                                                                                                             
+  //       // console.log(
+  //       //   'gameplaying white click inside selectAndListenCurrentRow()',
+  //       //   gamePlaying
+  //       // );
+  //       if (gamePlaying == false) {
+  //         console.log('radhika test: currentRowOnCurrentBoard in keypress inside selectAndListenCurrentRow gamePlaying became false, end interval');
+  //         // clearInterval(myInterval);
+  //       } 
+  //     };  
+  // }}});
 
 }
 
@@ -268,18 +274,19 @@ function selectAndListenCurrentRow() {
 function appendAndDeleteRow(gamePlaying) {
   console.log("log speed:", speed)
   // dynamically change the run interval
- 
-  if(speed > 100){  
-      speed -= 15;
-      clearInterval(myInterval); // stop the setInterval()
-      myInterval = setInterval(appendAndDeleteRow, speed, gamePlaying); // start the
-  }
-  
 
-  if(timeElapsed > gameScore){
+  if (speed > 100) {
+    speed -= 15;
+    clearInterval(myInterval); // stop the setInterval()
+    myInterval = setInterval(appendAndDeleteRow, speed, gamePlaying); // start the
+  }
+
+
+  if (timeElapsed > gameScore) {
     console.log("game stopped due to no click in appendAndDeleteRow as time elapsed!!")
     gamePlaying = false;
     clearInterval(myInterval);
+    endGamePopMessage();
     return;
   }
 
@@ -292,7 +299,7 @@ function appendAndDeleteRow(gamePlaying) {
   // console.log('added new row is:', newRow);
   // adding new row
   board.splice(0, 0, newRow);
-  
+
   // deleting new row
   board.pop();
   //playing area - 1. remove last row
@@ -300,16 +307,16 @@ function appendAndDeleteRow(gamePlaying) {
   removeLastRowFromPlayingArea();
   // console.log('should remove last row');
   insertNewRowInPlayingArea(newRow);
- 
+
   // check wrong event (white click) and check no event (no click)
   // || gameRowWasEmpty
-  if(timeElapsed === 1 || gameRowWasEmpty){
+  if (timeElapsed === 1 || gameRowWasEmpty) {
     gameRowWasEmpty = false;
     gamePlaying = selectAndListenCurrentRow();
   }
-  
-  
-  
+
+
+
   console.log('gamePlaying inside listenEventOnSecondLastRow():', gamePlaying);
   // console.log("forcestop in appendAndDeleteRow... by making gamePlaying false")
   // gamePlaying = false;
@@ -322,27 +329,50 @@ function appendAndDeleteRow(gamePlaying) {
 
 
 
-                                        //AKASH - keybind functionality
-window.addEventListener("keypress",function(event){
-  if(currentRow == null)    return;
+//AKASH - keybind functionality
+window.addEventListener("keypress", function (event) {
+  if (currentRow == null) return;
 
-  if(!controls.has(event.key.toUpperCase())) return ;
+  if (!controls.has(event.key.toUpperCase())) return;
   const keyPressed = event.key.toUpperCase();
-  
-  console.log("hi i am current row:",currentRow)
+
+
+  // const audio = document.querySelector(`audio[data-key= "${keyPressed}"]`);
+
+  // for(let note of audios){
+  //   if(note.classList.contains(keyPressed)){
+  //     theNote = note;
+  //   }
+  // }
+
+  // const audio = new Audio('https://soundcloud.com/aakash-jangra-45728440/a0?in=aakash-jangra-45728440/sets/piano-notes&si=c0d7a05aeca84c199347de0ebb47cb2e&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing');
+
+  // if(!audio) return;
+  // console.log(audio);
+  // audio.currentTime = 0;
+  // audio.play();
+  // let audio = new Audio(a_note);
+  // console.log("The audio is: ", audio);
+  // audio.play();
+  //playing respective sounds 
+  // if(keyPressed === 'A'){
+
+  // }
+
+  console.log("hi i am current row:", currentRow)
   console.log("eventkey", keyPressed);
 
   let spans = currentRow.querySelectorAll('span');
 
-  for(let span of spans){
+  for (let span of spans) {
 
-    if(span.textContent == keyPressed ){
-      if(span.style.backgroundColor == 'black'){
+    if (span.textContent == keyPressed) {
+      if (span.style.backgroundColor == 'black') {
         span.style.backgroundColor = 'grey';
         gameScore++;
         gameRows.shift();
-        
-        if(gameRows.length == 0) {
+
+        if (gameRows.length == 0) {
           gameRowWasEmpty = true;
           currentRow = null;
           return;
@@ -351,51 +381,52 @@ window.addEventListener("keypress",function(event){
         console.log("i am gameRows array: ", gameRows);
         currentRow = gameRows[0];
         selectAndListenCurrentRow();
-        
+
         console.log("I am current row : ", currentRow);
         gameScoreContainer.textContent = gameScore;
 
-        if(myInterval == null){
+        if (myInterval == null) {
           myInterval = setInterval(appendAndDeleteRow, speed, gamePlaying);
-        //   var myFunction = function(){
-        //     clearInterval(myInterval);
-        //     counter *= 10;
-        //     interval = setInterval(myFunction, counter);
-        // }
-        // var myInterval = setInterval(myFunction, speed);
+          //   var myFunction = function(){
+          //     clearInterval(myInterval);
+          //     counter *= 10;
+          //     interval = setInterval(myFunction, counter);
+          // }
+          // var myInterval = setInterval(myFunction, speed);
         }
-          
+
 
       } else {
-          span.style.backgroundColor = 'red';    
-          clearInterval(myInterval)
-          //game over
-        }
-
-        // the keypressed thing has been executed
-        return;
+        span.style.backgroundColor = 'red';
+        clearInterval(myInterval)
+        endGamePopMessage();
+        //game over
       }
-    } 
 
-    // console.log(span, 'event key ',event.key);
+      // the keypressed thing has been executed
+      return;
+    }
   }
-  
+
+  // console.log(span, 'event key ',event.key);
+}
+
 );
 
 
 function clickonStart() {
-  
+
   currentRow = gameRows[0];
-  
+
   console.log('currentrow inside clickonstart::', currentRow);
 
   currentRow.addEventListener('click', function (event) {
     let cell = event.target;
     if (cell.style.backgroundColor == 'black') {
       cell.style.backgroundColor = 'grey';
-      gameScore = 1;  
+      gameScore = 1;
       gameScoreContainer.textContent = gameScore;
-      
+
       gameRows.shift();
       selectAndListenCurrentRow();
       //translating the playing area in Y direction
@@ -408,10 +439,11 @@ function clickonStart() {
       // );
     } else {
       cell.style.backgroundColor = 'red';
-      // console.log('quit game inside clickonStart() ');
+      endGamePopMessage();
+      console.log('quit game inside clickonStart() ');
     }
   });
-  
+
   // window.addEventListener("keydown",function(event){
   //   if(startOnce == false)    return;
   //   if(currentRow == null)    return;
@@ -426,7 +458,7 @@ function clickonStart() {
   //         span.style.backgroundColor = 'grey';
   //         gameScore = 1;  
   //         gameScoreContainer.textContent = gameScore;
-      
+
   //     //translating the playing area in Y direction
   //     // setInterval(transformPlayingArea, 1000);
   //     console.log("caling appendAndDeleteRow inside clickonstart in keydown  ")
@@ -439,14 +471,14 @@ function clickonStart() {
   //       } else {
   //         span.style.backgroundColor = 'red';
   //         // console.log('quit game inside clickonStart() ');
-           
+
   //         }
   //       }
   //     } 
   //     // console.log(span, 'event key ',event.key);
   //     startOnce = false;
   //   }
-    
+
   // );
 
 
@@ -458,7 +490,7 @@ function clickonStart() {
 function playGame() {
   makeBoardDisplay();
   clickonStart();
-  
+
 }
 
 playGame();
@@ -479,5 +511,23 @@ function generateRow() {
 //     }
 // }
 
+function endGamePopMessage() {
+  playingArea.innerHTML += '<div class="end-game-pop"></div>';
+  let endGamePop = document.querySelector(".end-game-pop");
+  endGamePop.style.position = 'absolute';
+  endGamePop.style.backgroundColor = 'red';
+  endGamePop.style.left = '0';
+  endGamePop.style.top = '0';
+  endGamePop.style.width = style.getPropertyValue("--pa-width");
+  endGamePop.style.height = style.getPropertyValue("--pa-height");
+  // <button class="exit-btn">Exit</button>
+  endGamePop.innerHTML += `<p class="game-over-message">Game Over!</p><p class="game-over-score">Game Score:` + gameScore + `</p><button class="play-btn">Play Again</button>`;
+  let playBtn = document.querySelector(".play-btn");
+  playBtn.addEventListener("click", function () {
+    window.location = 'http://127.0.0.1:5500/piano-tiles-game/'
+    // window.location.reload();
+    endGamePop.remove();
+  })
+}
 
 
