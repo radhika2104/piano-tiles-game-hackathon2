@@ -153,34 +153,34 @@ function insertNewRowInPlayingArea(newRow) {
 }
 
 //listening to current row
-function currentRowEventListen(event) {
-  // LOGIC left for any row!
-  let element = event.target;
-  let rowIteration = 0;
-  while (playing) {
-    if (element.style.backgroundColor == 'black' && rowIteration == 2) {
-      element.style.backgroundColor = 'grey';
-      // board.push();
-      var newRow = generateRow();
-      console.log('added new row is:', newRow);
-      // adding new row
-      board.splice(0, 0, newRow);
-      // deleting old row
-      board.pop();
-      //playing area - 1. remove last row
-      // 2. insert new Row
-      removeLastRowFromPlayingArea();
-      console.log('should remove last row');
-      insertNewRowInPlayingArea(newRow);
+// function currentRowEventListen(event) {
+//   // LOGIC left for any row!
+//   let element = event.target;
+//   let rowIteration = 0;
+//   while (playing) {
+//     if (element.style.backgroundColor == 'black' && rowIteration == 2) {
+//       element.style.backgroundColor = 'grey';
+//       // board.push();
+//       var newRow = generateRow();
+//       console.log('added new row is:', newRow);
+//       // adding new row
+//       board.splice(0, 0, newRow);
+//       // deleting old row
+//       board.pop();
+//       //playing area - 1. remove last row
+//       // 2. insert new Row
+//       removeLastRowFromPlayingArea();
+//       console.log('should remove last row');
+//       insertNewRowInPlayingArea(newRow);
 
-      console.log('board after black click:', board);
-      rowIteration++;
-    } else if (element.style.backgroundColor == 'white') {
-      playing = false;
-      console.log('game quit message inside generateNewBoard');
-    }
-  }
-}
+//       console.log('board after black click:', board);
+//       rowIteration++;
+//     } else if (element.style.backgroundColor == 'white') {
+//       playing = false;
+//       console.log('game quit message inside generateNewBoard');
+//     }
+//   }
+// }
 
 function selectAndListenCurrentRow() {
 
@@ -218,11 +218,13 @@ function selectAndListenCurrentRow() {
       //   'gameplaying white click inside selectAndListenCurrentRow()',
       //   gamePlaying
       // );
-      if (gamePlaying == false) {
-        // console.log('radhika test: are we inside gamePlaying');
-        clearInterval(myInterval);
-      }
+      
      
+    }
+
+    if (gamePlaying == false) {
+      // console.log('radhika test: are we inside gamePlaying');
+      clearInterval(myInterval);
     }
   });
 
