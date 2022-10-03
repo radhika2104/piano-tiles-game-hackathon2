@@ -1,19 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Silkscreen:wght@400;700&display=swap');
 
 :root{
     --primary-color: rgb(37, 27, 55);
     --secondary-color: rgb(55, 41, 72);
     --third-color: rgb(255, 202, 202);
     --fourth-color: rgb(255, 236, 239);
+    --font-family-1: 'Silkscreen', cursive;
     --font-family-2: 'Bungee Spice', cursive;
-    --pa-width: 100vw;
-    --pa-height: 85vh;
+    --pa-width: 30vw;
+    --pa-height: 80vh;
 }
 
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html{
+    font-family: var(--font-family-1);
 }
 
 body{
@@ -26,7 +31,6 @@ body{
     margin: 1rem auto;
     display: flex;
     flex-direction: row;
-    /* justify-items: space-between; */
 }
 
 .header h1{
@@ -60,28 +64,24 @@ body{
     overflow: hidden;
     background-color: var(--third-color);
     position: relative;
-    max-width: 800px;
-    max-height: 800px;
-    /* transform: translateY(1px); */
-    /* transform: translateY(120px, 50%); */
-    /* transition: all 3s ease-in; */
+    border-radius: 0.5rem;
+
 }
 
 .playing-area div{
     display: flex;
-    justify-content: stretch;
-    align-content: stretch;
-    height: calc(var(--pa-height)  / 4);
 }
 
 .playing-area div span{
-    
+    height: calc(var(--pa-height)  / 4);
     width: calc(var(--pa-width) / 4);
     background-color: var(--third-color);
     text-align: center;
+    padding-top: calc(calc(calc(var(--pa-height)  / 4)/2) - calc(1rem));
     border: 1px solid var(--secondary-color);
-    
+    font-weight: bolder;
 }
+
 .exit-btn,.play-btn{
     width: 10%;
     height: 10%;
@@ -96,76 +96,77 @@ body{
 }
 
 .play-btn{
-    position: absolute; top: 50%; 
+    position: absolute; top: 50%; left:22%;
     width: max-content;
+    font-family: var(--font-family-1);
+    padding: 0px 10px;
+    text-align: center;
+    font-size: 1.2rem;
+    border: none;
+    color: royalblue;
+    font-weight: 700;
 }
 .game-over-message{
     display: block;
-    position: absolute; top: 30%; left:40%;
+    position: absolute; top: 30%; left:27%;
+    font-family: var(--font-family-1);
+    text-align: center;
+    font-size: 1.2rem;
 }
 
 .game-over-score{
     display: block;
-    position: absolute; top: 40%; left:40%;
+    position: absolute; top: 40%; left:22%;
+    font-family: var(--font-family-1);
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.end-game-pop {
+    animation: party 5s infinite;
+  }
+  
+  @keyframes party{
+      25% {background-color: rgb(233, 69, 96);}
+      
+      
+      50% {background-color: rgb(83, 52, 131);}
+      75% {background-color: rgb(175, 1, 113);}
+      100% {background-color: rgb(15, 52, 96);} 
+  }
+
+
+@media (width <= 300px){
+    :root{
+        --pa-width: 100vw;
+    }
 }
 
 
+@media (300px < width <= 450px){
+    :root{
+        --pa-width: 85vw;
+    }
+}
 
-@media (width>500px) {
-    /* :root{
-    --pa-width: 100%;
-    --pa-height: 100%;
-    } */
+@media (width>450px) {
+    :root{
+        --pa-width: 20rem;
+    }
     
     .header h1{
         font-size: 3rem;
     }       
 
-    .playing-area{
-        /* width: var(--pa-width);
-        height: var(--pa-height);
-        overflow: hidden;
-        background-color: var(--third-color);
-        position: relative; */
-        max-width: 80%;
-        max-height: 80%;
-        /* transition: all 3s ease-in; */
-    }
-
 }
 
 @media (width>830px) {
-    /* :root{
-    --pa-width: 100%;
-    --pa-height: 100%;
-    } */
-
-    .playing-area{
-        /* width: var(--pa-width);
-        height: var(--pa-height);
-        overflow: hidden;
-        background-color: var(--third-color);
-        position: relative; */
-        max-width: 60%;
-        max-height: 90%;
-        /* transition: all 3s ease-in; */
+    :root{
+        --pa-width: 20rem;
     }
 
 }
 
-/* @media (width<500px and height>700px) {
-    :root{
-    --pa-width: 100%;
-    --pa-height: 100%;
-    }
-
-} */
-
-/* @media (width>800px) {
-    --pa-width: 60%;
-    --pa-height: 60%;
-
-} */
 
 /* .endGamePop{
     display: none;
