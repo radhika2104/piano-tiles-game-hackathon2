@@ -532,14 +532,14 @@ function endGamePopMessage() {
   endGamePop.innerHTML += `<p class="game-over-message">Game Over!</p><p class="game-over-score">Game Score:` + gameScore + `</p><button class="play-btn">Play Again</button>`;
   let playBtn = document.querySelector(".play-btn");
   playBtn.addEventListener("click", function () {
-    window.location = 'http://127.0.0.1:5500/piano-tiles-game/'
+    document.location = 'https://var-piano-tiles.netlify.app/'
     // window.location.reload();
     endGamePop.remove();
   })
 }
 function setHalfVolume() {
   var myAudio = document.getElementById("audio1");  
-  myAudio.volume = 0.2; 
+  myAudio.volume = 0.08; 
 }
 
 
