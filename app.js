@@ -20,6 +20,7 @@ let gameRowWasEmpty = false;
 let gameScoreContainer = document.querySelector("#gameScore");
 let currentRow = null;
 let startOnce = true;
+let speed = 900;
 
 const controls = new Set(['A', 'S', 'D', 'F']);
 
@@ -265,6 +266,15 @@ function selectAndListenCurrentRow() {
 //counter for score of the person 
 
 function appendAndDeleteRow(gamePlaying) {
+  console.log("log speed:", speed)
+  // dynamically change the run interval
+ 
+  if(speed > 100){  
+      speed -= 15;
+      clearInterval(myInterval); // stop the setInterval()
+      myInterval = setInterval(appendAndDeleteRow, speed, gamePlaying); // start the
+  }
+  
 
   if(timeElapsed > gameScore){
     console.log("game stopped due to no click in appendAndDeleteRow as time elapsed!!")
@@ -345,11 +355,20 @@ window.addEventListener("keypress",function(event){
         console.log("I am current row : ", currentRow);
         gameScoreContainer.textContent = gameScore;
 
-        if(myInterval == null)
-          myInterval = setInterval(appendAndDeleteRow, 1000, gamePlaying);
+        if(myInterval == null){
+          myInterval = setInterval(appendAndDeleteRow, speed, gamePlaying);
+        //   var myFunction = function(){
+        //     clearInterval(myInterval);
+        //     counter *= 10;
+        //     interval = setInterval(myFunction, counter);
+        // }
+        // var myInterval = setInterval(myFunction, speed);
+        }
+          
 
       } else {
           span.style.backgroundColor = 'red';    
+          clearInterval(myInterval)
           //game over
         }
 
@@ -382,7 +401,7 @@ function clickonStart() {
       //translating the playing area in Y direction
       // setInterval(transformPlayingArea, 1000);
 
-      myInterval = setInterval(appendAndDeleteRow, 1000, gamePlaying);
+      myInterval = setInterval(appendAndDeleteRow, speed, gamePlaying);
       // console.log(
       //   'gamePlaying outside listenEventOnSecondLastRow():',
       //   gamePlaying
