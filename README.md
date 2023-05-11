@@ -1,18 +1,18 @@
-# Piano Tiles Game 
+# Piano Tiles Game
 
 Play the classic game of piano tiles in Arcade mode.
 
-🔗Live Link: [https://devnest-coders.github.io/piano-tiles-game/](hhttps://devnest-coders.github.io/piano-tiles-game/)
+🔗Live Link: [https://piano-tiles-game-hackathon2.netlify.app/](https://piano-tiles-game-hackathon2.netlify.app/)
 
 ## Features 💫
 
-- Arcade mode of piano tiles game 
+- Arcade mode of piano tiles game
 - Game playable with mouse click as well as keys A,S,D and F
 - Responsive web app
 
-## Bonus Features  💫
+## Bonus Features 💫
 
-- Speed/difficulty of game increases as game proceeds and reaches max speed 
+- Speed/difficulty of game increases as game proceeds and reaches max speed
 - Background music for the entire game
 - Music added for valid game moves i.e. A,S,D,F keys, mouse click and game-over scenario
 - Game score is visible as it increments
@@ -25,15 +25,17 @@ Play the classic game of piano tiles in Arcade mode.
 - User has to click on black block just above the yellow row to start the game
 - While using keys, follow the key mentioned on black blocks to select via. using keys
 
-    ### Game over scenario 
-    - Selecting a white block anytime during game 
-    - If no block is selected and user looses chance to select as row moves out of view
-    - Make sure to select the blocks in order i.e. from bottom to top, skipping any row in order will end the game as skipping rows is not valid
+  ### Game over scenario
+
+  - Selecting a white block anytime during game
+  - If no block is selected and user looses chance to select as row moves out of view
+  - Make sure to select the blocks in order i.e. from bottom to top, skipping any row in order will end the game as skipping rows is not valid
 
 ## Technologies Used 🛠️
-Vanilla Javascript
-HTML
-CSS
+
+- Vanilla Javascript
+- HTML
+- CSS
 
 ## Connect with the Makers
 
